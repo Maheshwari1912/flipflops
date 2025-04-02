@@ -1,17 +1,22 @@
-module sr_flipflop_tb();
-reg S,R, clk;
-wire Q, Qn;
-sr_flipflop dut(S,R,clk,Q,Qn);
-always #5 clk=~clk;
-initial begin
-clk=0; S=0; R=0;#10;
-  S=1; R=0;#10;
-  S=0; R=1;#10;
-  S=1; R=1;#10;
-  S=0; R=0;#10;
-  S=0; R=1;#10;
-  S=1; R=0;#10;
-$stop;
-end
+module flipflop_tb();
+  reg S, R, clk;
+  wire Q, Qn;
+  
+  flip_flop dut(S, R, clk, Q, Qn);
+  
+  always #5 clk = ~clk; // Generate a clock with a period of 10
+  
+  initial begin
+    clk = 0;
+    S = 0; R = 0; #10; // No Change
+    S = 1; R = 0; #10; // Set
+    S = 0; R = 1; #10; // Reset
+    S = 0; R = 0; #10; // No Change
+    S = 1; R = 1; #10; // Invalid State
+    S = 0; R = 0; #10; // No Change
+    S = 1; R = 0; #10; // Set
+    S = 0; R = 1; #10; // Reset
+    $stop;
+  end
 endmodule
       
