@@ -1,19 +1,14 @@
-module sr_flipflop(
-  input S,R,clk,
-  output reg Q, Qn);
+module flip_flop(
+  input S, R, clk,
+  output reg Q, Qn
+);
   always @(posedge clk) begin
-    if(S && ~R)begin
-        Q <= 1;
-        Qn <= 0;
-    end else if(~S && R)begin
-        Q <= 0;
-        Qn <= 1;
-    end else if(~S && ~R) begin
-        Q <= Q;
-        Qn <= Qn;
-    end else begin
-        Q <= 1'bx;
-        Qn <= 1'bx;
-    end
+    case ({S, R})
+      2'b00: Q <= Q;          // No Change
+      2'b01: Q <= 0;          // Reset
+      2'b10: Q <= 1;          // Set
+      2'b11: Q <= 1'bx;       // Invalid State
+    endcase
+    Qn <= ~Q; // Ensure Qn is always the complement of Q
   end
 endmodule
